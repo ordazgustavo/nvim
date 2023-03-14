@@ -189,6 +189,7 @@ require("lazy").setup({
     },
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
+      "JoosepAlviste/nvim-ts-context-commentstring",
     },
     opts = {
       highlight = { enable = true },
@@ -209,6 +210,7 @@ require("lazy").setup({
         "query",
         "regex",
         "rust",
+        "toml",
         "tsx",
         "typescript",
         "vim",
@@ -242,6 +244,10 @@ require("lazy").setup({
     ---@param opts TSConfig
     config = function(_, opts)
       require("nvim-treesitter.configs").setup(opts)
+
+      opt.foldmethod = "expr"
+      opt.foldexpr = "nvim_treesitter#foldexpr()"
+      opt.foldenable = false
     end,
   },
 
@@ -377,14 +383,6 @@ require("lazy").setup({
           end
         end
         require("lspconfig")[server].setup(server_opts)
-      end
-
-      -- temp fix for lspconfig rename
-      -- https://github.com/neovim/nvim-lspconfig/pull/2439
-      local mappings = require("mason-lspconfig.mappings.server")
-      if not mappings.lspconfig_to_package.lua_ls then
-        mappings.lspconfig_to_package.lua_ls = "lua-language-server"
-        mappings.package_to_lspconfig["lua-language-server"] = "lua_ls"
       end
 
       local mlsp = require("mason-lspconfig")
@@ -558,7 +556,6 @@ require("lazy").setup({
     end,
   },
 
-  { "JoosepAlviste/nvim-ts-context-commentstring", lazy = true },
   {
     "echasnovski/mini.comment",
     event = "VeryLazy",
@@ -607,7 +604,6 @@ require("lazy").setup({
         m("n", "<leader>ghD", function()
           gs.diffthis("~")
         end, "Diff This ~")
-        -- m({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
       end,
     },
   },
