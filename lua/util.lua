@@ -9,15 +9,29 @@ end
 
 M.icons = {
   diagnostics = {
-    Error = " ",
-    Warn = " ",
-    Hint = " ",
-    Info = " ",
+    Error = "● ",
+    Warn = "● ",
+    Hint = "● ",
+    Info = "● ",
+
+    error = "● ",
+    warn = "● ",
+    hint = "● ",
+    info = "● ",
+
+    -- Error = " ",
+    -- Warn = " ",
+    -- Hint = " ",
+    -- Info = " ",
   },
   git = {
-    added = " ",
-    modified = " ",
-    removed = " ",
+    added = "● ",
+    modified = "● ",
+    removed = "● ",
+
+    -- added = " ",
+    -- modified = " ",
+    -- removed = " ",
   },
   kinds = {
     Array = " ",

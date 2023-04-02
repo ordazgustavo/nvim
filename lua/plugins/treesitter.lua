@@ -10,6 +10,7 @@ return {
     },
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
+      "nvim-treesitter/nvim-treesitter-context",
       "JoosepAlviste/nvim-ts-context-commentstring",
     },
     opts = {
@@ -18,6 +19,7 @@ return {
       context_commentstring = { enable = true, enable_autocmd = false },
       ensure_installed = {
         "bash",
+        "c",
         "help",
         "html",
         "css",
@@ -67,6 +69,10 @@ return {
       require("nvim-treesitter.configs").setup(opts)
 
       require("nvim-treesitter.install").update({ with_sync = true })
+
+      require("treesitter-context").setup({
+        enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+      })
 
       vim.opt.foldmethod = "expr"
       vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
