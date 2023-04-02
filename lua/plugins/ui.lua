@@ -27,23 +27,17 @@ return {
     keys = {
       {
         "<leader>e",
-        function()
-          require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
-        end,
+        function() require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() }) end,
         desc = "Explorer toggle",
       },
     },
-    deactivate = function()
-      vim.cmd([[Neotree close]])
-    end,
+    deactivate = function() vim.cmd([[Neotree close]]) end,
     init = function()
       vim.g.neo_tree_remove_legacy_commands = 1
       if vim.fn.argc() == 1 then
         ---@diagnostic disable-next-line: param-type-mismatch
         local stat = vim.loop.fs_stat(vim.fn.argv(0))
-        if stat and stat.type == "directory" then
-          require("neo-tree")
-        end
+        if stat and stat.type == "directory" then require("neo-tree") end
       end
     end,
     opts = {
@@ -100,9 +94,7 @@ return {
       event_handlers = {
         {
           event = "file_opened",
-          handler = function()
-            require("neo-tree").close_all()
-          end,
+          handler = function() require("neo-tree").close_all() end,
         },
       },
       default_component_configs = {
@@ -169,9 +161,7 @@ return {
           completeopt = "menu,menuone,noinsert",
         },
         snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
+          expand = function(args) luasnip.lsp_expand(args.body) end,
         },
         window = {
           completion = cmp.config.window.bordered(),
@@ -229,9 +219,7 @@ return {
         formatting = {
           format = function(_, item)
             local kinds = icons.kinds
-            if kinds[item.kind] then
-              item.kind = kinds[item.kind]
-            end
+            if kinds[item.kind] then item.kind = kinds[item.kind] end
             return item
           end,
         },
@@ -285,9 +273,7 @@ return {
       sections = {
         lualine_a = {
           {
-            function()
-              return " "
-            end,
+            function() return " " end,
             padding = 0,
           },
         },
@@ -338,9 +324,7 @@ return {
         },
         lualine_z = {
           {
-            function()
-              return " "
-            end,
+            function() return " " end,
             padding = 0,
           },
         },
@@ -372,11 +356,13 @@ return {
             timer:start(
               50,
               0,
-              vim.schedule_wrap(function()
-                lualine.refresh({
-                  place = { "statusline" },
-                })
-              end)
+              vim.schedule_wrap(
+                function()
+                  lualine.refresh({
+                    place = { "statusline" },
+                  })
+                end
+              )
             )
           end
         end,
@@ -391,11 +377,8 @@ return {
       options = {
         diagnostics = "nvim_lsp",
         diagnostics_indicator = function(_, level)
-          local icon = icons.diagnostics[level:gsub("^%l", string.upper)]
-          if icon then
-            return icon:gsub("%s+", "")
-          end
-          return ""
+          local icon = level:match("error") and icons.diagnostics.Error or icons.diagnostics.Warn
+          return icon
         end,
       },
     },
@@ -403,6 +386,8 @@ return {
       require("bufferline").setup(opts)
       map("n", "[b", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev Buffer" })
       map("n", "]b", "<cmd>BufferLineCycleNext<cr>", { desc = "Next Buffer" })
+      map("n", "<leader>bcr", "<cmd>BufferLineCloseRight<cr>", { desc = "Close to the right" })
+      map("n", "<leader>bcl", "<cmd>BufferLineCloseLeft<cr>", { desc = "Close to the left" })
     end,
   },
 }

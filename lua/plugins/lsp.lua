@@ -73,9 +73,7 @@ return {
         callback = function(args)
           local buffer = args.buf
 
-          local nmap = function(keys, func, desc)
-            map("n", keys, func, { buffer = buffer, desc = desc })
-          end
+          local nmap = function(keys, func, desc) map("n", keys, func, { buffer = buffer, desc = desc }) end
 
           nmap("]d", vim.diagnostic.goto_next, "Next diagnostic")
           nmap("[d", vim.diagnostic.goto_prev, "Previous diagnostic")
@@ -115,9 +113,7 @@ return {
                 vim.lsp.buf.format(vim.tbl_deep_extend("force", {
                   bufnr = buffer,
                   filter = function(cl)
-                    if have_nls then
-                      return cl.name == "null-ls"
-                    end
+                    if have_nls then return cl.name == "null-ls" end
                     return cl.name ~= "null-ls"
                   end,
                 }, opts.format))
@@ -142,13 +138,9 @@ return {
         }, opts.servers[server] or {})
 
         if opts.setup[server] then
-          if opts.setup[server](server, server_opts) then
-            return
-          end
+          if opts.setup[server](server, server_opts) then return end
         elseif opts.setup["*"] then
-          if opts.setup["*"](server, server_opts) then
-            return
-          end
+          if opts.setup["*"](server, server_opts) then return end
         end
         require("lspconfig")[server].setup(server_opts)
       end
@@ -193,9 +185,7 @@ return {
       local mr = require("mason-registry")
       for _, tool in ipairs(opts.ensure_installed) do
         local p = mr.get_package(tool)
-        if not p:is_installed() then
-          p:install()
-        end
+        if not p:is_installed() then p:install() end
       end
     end,
   },

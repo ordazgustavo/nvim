@@ -14,11 +14,6 @@ M.icons = {
     Hint = "● ",
     Info = "● ",
 
-    error = "● ",
-    warn = "● ",
-    hint = "● ",
-    info = "● ",
-
     -- Error = " ",
     -- Warn = " ",
     -- Hint = " ",

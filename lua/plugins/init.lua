@@ -22,26 +22,20 @@ return {
     keys = {
       {
         "<tab>",
-        function()
-          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
-        end,
+        function() return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>" end,
         expr = true,
         silent = true,
         mode = "i",
       },
       {
         "<tab>",
-        function()
-          require("luasnip").jump(1)
-        end,
+        function() require("luasnip").jump(1) end,
         mode = "s",
       },
 
       {
         "<s-tab>",
-        function()
-          require("luasnip").jump(-1)
-        end,
+        function() require("luasnip").jump(-1) end,
         mode = { "i", "s" },
       },
     },
@@ -63,9 +57,7 @@ return {
         local gs = package.loaded.gitsigns
         local m = require("util").map
 
-        local function map(mode, l, r, desc)
-          m(mode, l, r, { buffer = buffer, desc = desc })
-        end
+        local function map(mode, l, r, desc) m(mode, l, r, { buffer = buffer, desc = desc }) end
 
         map("n", "]g", gs.next_hunk, "Next Hunk")
         map("n", "[g", gs.prev_hunk, "Previous Hunk")
@@ -75,13 +67,9 @@ return {
         map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
         map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
         map("n", "<leader>ghp", gs.preview_hunk, "Preview Hunk")
-        map("n", "<leader>ghb", function()
-          gs.blame_line({ full = true })
-        end, "Blame Line")
+        map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
         map("n", "<leader>ghd", gs.diffthis, "Diff This")
-        map("n", "<leader>ghD", function()
-          gs.diffthis("~")
-        end, "Diff This ~")
+        map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
       end,
     },
   },
@@ -94,9 +82,7 @@ return {
       {
         "nvim-telescope/telescope-fzf-native.nvim",
         build = "make",
-        cond = function()
-          return vim.fn.executable("make") == 1
-        end,
+        cond = function() return vim.fn.executable("make") == 1 end,
       },
     },
     opts = {
@@ -167,6 +153,7 @@ return {
         ["]"] = { name = "next" },
         ["["] = { name = "prev" },
         ["gz"] = { name = "Surround" },
+        ["<leader>b"] = { name = "Buffer" },
         ["<leader>f"] = { name = "Find" },
         ["<leader>g"] = { name = "Git" },
         ["<leader>gh"] = { name = "hunk" },
