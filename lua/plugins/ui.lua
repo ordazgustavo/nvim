@@ -33,7 +33,7 @@ return {
     },
     deactivate = function() vim.cmd([[Neotree close]]) end,
     init = function()
-      vim.g.neo_tree_remove_legacy_commands = 1
+      vim.g.neo_tree_remove_legacy_commands = true
       if vim.fn.argc() == 1 then
         ---@diagnostic disable-next-line: param-type-mismatch
         local stat = vim.loop.fs_stat(vim.fn.argv(0))
@@ -41,12 +41,13 @@ return {
       end
     end,
     opts = {
+      auto_clean_after_session_restore = true,
       close_if_last_window = true,
       filesystem = {
         bind_to_cwd = false,
         follow_current_file = true,
         group_empty_dirs = true,
-        use_libuv_file_watcher = false,
+        use_libuv_file_watcher = true,
         window = {
           mappings = {
             ["o"] = "system_open",
@@ -60,26 +61,10 @@ return {
           end,
         },
         filtered_items = {
-          visible = true, -- when true, they will just be displayed differently than normal items
-          -- hide_dotfiles = true,
-          -- hide_gitignored = true,
-          -- hide_hidden = true, -- only works on Windows for hidden files/directories
-          -- hide_by_name = {
-          --   --"node_modules"
-          -- },
-          -- hide_by_pattern = { -- uses glob style patterns
-          --   --"*.meta",
-          --   --"*/src/*/tsconfig.json",
-          -- },
-          -- always_show = { -- remains visible even if other settings would normally hide it
-          --   --".gitignored",
-          -- },
-          never_show = { -- remains hidden even if visible is toggled to true, this overrides always_show
+          visible = true,
+          never_show = {
             ".DS_Store",
           },
-          -- never_show_by_pattern = { -- uses glob style patterns
-          --   --".null-ls_*",
-          -- },
         },
       },
       window = {
@@ -90,29 +75,13 @@ return {
       },
       source_selector = {
         winbar = true,
+        content_layout = "center",
       },
       event_handlers = {
         {
           event = "file_opened",
           handler = function() require("neo-tree").close_all() end,
         },
-      },
-      default_component_configs = {
-        -- git_status = {
-        --     symbols = {
-        --       -- Change type
-        --       -- added     = "", -- or "✚", but this is redundant info if you use git_status_colors on the name
-        --       -- modified  = "", -- or "", but this is redundant info if you use git_status_colors on the name
-        --       deleted   = "✖",-- this can only be used in the git_status source
-        --       renamed   = "",-- this can only be used in the git_status source
-        --       -- Status type
-        --       untracked = "",
-        --       ignored   = "",
-        --       unstaged  = "",
-        --       staged    = "",
-        --       conflict  = "",
-        --     }
-        --   },
       },
     },
   },
@@ -243,33 +212,6 @@ return {
         section_separators = "",
       },
       extensions = { "neo-tree" },
-      -- winbar = {
-      --   lualine_a = {
-      --     {
-      --       "buffers",
-      --       buffers_color = {
-      --         -- Same values as the general color option can be used here.
-      --         active = "lualine_b_normal", -- Color for active buffer.
-      --         inactive = "lualine_b_inactive", -- Color for inactive buffer.
-      --       },
-      --       symbols = {
-      --         modified = " ●",
-      --         alternate_file = "# ",
-      --       },
-      --     },
-      --   },
-      -- },
-      -- inactive_winbar = {
-      --   lualine_b = {
-      --     {
-      --       "filetype",
-      --       icon_only = true,
-      --       separator = "",
-      --       padding = { left = 1, right = 0 },
-      --     },
-      --     { "filename", path = 1, symbols = { modified = "●", readonly = "", unnamed = "" } },
-      --   },
-      -- },
       sections = {
         lualine_a = {
           {
@@ -380,6 +322,14 @@ return {
           local icon = level:match("error") and icons.diagnostics.Error or icons.diagnostics.Warn
           return icon
         end,
+        offsets = {
+          {
+            filetype = "neo-tree",
+            text = "File Explorer",
+            highlight = "Directory",
+            separator = true, -- use a "true" to enable the default, or set your own character
+          },
+        },
       },
     },
     config = function(_, opts)

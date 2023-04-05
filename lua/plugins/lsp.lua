@@ -172,6 +172,7 @@ return {
     keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
     opts = {
       ensure_installed = {
+        "eslint_d",
         "prettierd",
         "rust-analyzer",
         "stylua",
@@ -200,6 +201,11 @@ return {
         sources = {
           nls.builtins.formatting.prettierd,
           nls.builtins.formatting.stylua,
+          nls.builtins.formatting.eslint_d,
+
+          nls.builtins.diagnostics.eslint_d,
+
+          nls.builtins.code_actions.eslint_d,
         },
       }
     end,

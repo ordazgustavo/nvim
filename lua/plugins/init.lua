@@ -84,6 +84,7 @@ return {
         build = "make",
         cond = function() return vim.fn.executable("make") == 1 end,
       },
+      "nvim-telescope/telescope-file-browser.nvim",
     },
     opts = {
       defaults = {
@@ -111,16 +112,27 @@ return {
       },
       pickers = {
         find_files = {
-          theme = "dropdown",
+          theme = "ivy",
+        },
+      },
+      extensions = {
+        file_browser = {
+          theme = "ivy",
+          -- disables netrw and use telescope-file-browser in its place
+          hijack_netrw = true,
+          initial_mode = "normal",
         },
       },
     },
     config = function(_, opts)
-      pcall(require("telescope").load_extension, "fzf")
-
       require("telescope").setup(opts)
+
+      require("telescope").load_extension("fzf")
+      require("telescope").load_extension("file_browser")
     end,
     keys = {
+      -- explore
+      { "<leader>fe", "<cmd>Telescope file_browser path=%:p:h select_buffer=true<cr>", desc = "File explorer" },
       -- find
       { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
       { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find files" },
