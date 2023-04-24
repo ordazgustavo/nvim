@@ -1,6 +1,6 @@
 local util = require("util")
 
-local map = util.map
+-- local map = util.map
 local icons = util.icons
 
 return {
@@ -222,12 +222,11 @@ return {
         lualine_b = { "branch" },
         lualine_c = {
           {
-            "diagnostics",
+            "diff",
             symbols = {
-              error = icons.diagnostics.Error,
-              warn = icons.diagnostics.Warn,
-              info = icons.diagnostics.Info,
-              hint = icons.diagnostics.Hint,
+              added = icons.git.added,
+              modified = icons.git.modified,
+              removed = icons.git.removed,
             },
           },
           {
@@ -252,11 +251,12 @@ return {
             end,
           },
           {
-            "diff",
+            "diagnostics",
             symbols = {
-              added = icons.git.added,
-              modified = icons.git.modified,
-              removed = icons.git.removed,
+              error = icons.diagnostics.Error,
+              warn = icons.diagnostics.Warn,
+              info = icons.diagnostics.Info,
+              hint = icons.diagnostics.Hint,
             },
           },
         },
@@ -309,35 +309,6 @@ return {
           end
         end,
       })
-    end,
-  },
-
-  {
-    "akinsho/bufferline.nvim",
-    version = "v3.*",
-    opts = {
-      options = {
-        diagnostics = "nvim_lsp",
-        diagnostics_indicator = function(_, level)
-          local icon = level:match("error") and icons.diagnostics.Error or icons.diagnostics.Warn
-          return icon
-        end,
-        offsets = {
-          {
-            filetype = "neo-tree",
-            text = "File Explorer",
-            highlight = "Directory",
-            separator = true, -- use a "true" to enable the default, or set your own character
-          },
-        },
-      },
-    },
-    config = function(_, opts)
-      require("bufferline").setup(opts)
-      map("n", "[b", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev Buffer" })
-      map("n", "]b", "<cmd>BufferLineCycleNext<cr>", { desc = "Next Buffer" })
-      map("n", "<leader>bcr", "<cmd>BufferLineCloseRight<cr>", { desc = "Close to the right" })
-      map("n", "<leader>bcl", "<cmd>BufferLineCloseLeft<cr>", { desc = "Close to the left" })
     end,
   },
 }
