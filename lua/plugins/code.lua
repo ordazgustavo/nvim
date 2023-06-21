@@ -1,20 +1,27 @@
 return {
   {
     "echasnovski/mini.comment",
+    version = false,
+    event = { "BufReadPost", "BufNewFile" },
     opts = {
+      options = {
+        custom_commentstring = function() return vim.bo.commentstring end,
+      },
       hooks = {
         pre = function() require("ts_context_commentstring.internal").update_commentstring({}) end,
       },
     },
-    config = function(_, opts) require("mini.comment").setup(opts) end,
   },
   {
     "echasnovski/mini.pairs",
+    version = false,
+    event = { "BufReadPost", "BufNewFile" },
     opts = {},
-    config = function(_, opts) require("mini.pairs").setup(opts) end,
   },
   {
     "echasnovski/mini.surround",
+    version = false,
+    event = { "BufReadPost", "BufNewFile" },
     opts = {
       mappings = {
         add = "gza", -- Add surrounding in Normal and Visual modes
@@ -26,7 +33,6 @@ return {
         update_n_lines = "gzn", -- Update `n_lines`
       },
     },
-    config = function(_, opts) require("mini.surround").setup(opts) end,
   },
 
   {

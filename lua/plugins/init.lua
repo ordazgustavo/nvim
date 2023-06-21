@@ -175,4 +175,13 @@ return {
       wk.register(keymaps)
     end,
   },
+
+  {
+    "shortcuts/no-neck-pain.nvim",
+    lazy = true,
+    version = "*",
+    opts = {
+      width = 120,
+    },
+  },
 }

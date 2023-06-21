@@ -10,7 +10,7 @@ return {
     dependencies = {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
-      { "j-hui/fidget.nvim", opts = {} },
+      { "j-hui/fidget.nvim", branch = "legacy", opts = {} },
       { "folke/neodev.nvim", opts = { experimental = { pathStrict = true } } },
       { "b0o/SchemaStore.nvim", version = false },
     },
@@ -36,6 +36,7 @@ return {
           },
         },
         tsserver = {
+          flags = { debounce_text_changes = 500 },
           settings = {
             completions = {
               completeFunctionCalls = true,
