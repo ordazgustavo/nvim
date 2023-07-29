@@ -11,6 +11,21 @@ local function buf_autocmd_codelens(bufnr)
   })
 end
 
+local function lsp_format(bufnr, has_nls)
+  vim.lsp.buf.format({
+    bufnr = bufnr,
+    async = false,
+    formatting_options = nil,
+    timeout_ms = nil,
+    filter = function(cl)
+      if has_nls then
+        return cl.name == "null-ls"
+      end
+      return cl.name ~= "null-ls"
+    end,
+  })
+end
+
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     local map = require("util").map
@@ -43,25 +58,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     if client.supports_method("textDocument/formatting") then
       local ft = vim.bo[buffer].filetype
-      local have_nls = #require("null-ls.sources").get_available(ft, "NULL_LS_FORMATTING") > 0
+      local has_nls = #require("null-ls.sources").get_available(ft, "NULL_LS_FORMATTING") > 0
+
+      nmap("<leader>lf", function()
+        lsp_format(buffer, has_nls)
+      end, "Format document")
+
       local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
       vim.api.nvim_clear_autocmds({ group = augroup, buffer = buffer })
       vim.api.nvim_create_autocmd("BufWritePre", {
         group = augroup,
         buffer = buffer,
         callback = function()
-          vim.lsp.buf.format({
-            bufnr = buffer,
-            async = false,
-            formatting_options = nil,
-            timeout_ms = nil,
-            filter = function(cl)
-              if have_nls then
-                return cl.name == "null-ls"
-              end
-              return cl.name ~= "null-ls"
-            end,
-          })
+          lsp_format(buffer, has_nls)
         end,
       })
     end
