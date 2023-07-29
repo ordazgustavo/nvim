@@ -6,7 +6,7 @@ local opt = vim.opt
 -- opt.autowrite = true -- Enable auto write
 opt.breakindent = true
 opt.clipboard = "unnamedplus" -- Sync with system clipboard
-opt.cmdheight = 0
+opt.cmdheight = 1
 opt.completeopt = "menu,menuone,noselect"
 opt.conceallevel = 3 -- Hide * markup for bold and italic
 opt.confirm = true -- Confirm to save changes before exiting modified buffer
@@ -14,7 +14,7 @@ opt.cursorline = true -- Enable highlighting of the current line
 opt.expandtab = true -- Use spaces instead of tabs
 opt.formatoptions = "jcroqlnt" -- tcqj
 opt.grepformat = "%f:%l:%c:%m"
-opt.grepprg = "rg --vimgrep"
+opt.grepprg = "rg --vimgrep --smart-case"
 opt.hlsearch = false
 opt.ignorecase = true -- Ignore case
 opt.inccommand = "nosplit" -- preview incremental substitute
@@ -48,6 +48,18 @@ opt.updatetime = 200 -- Save swap file and trigger CursorHold
 opt.wildmode = "longest:full,full" -- Command-line completion mode
 opt.winminwidth = 5 -- Minimum window width
 opt.wrap = true -- Disable line wrap
+
+opt.foldcolumn = "1"
+opt.foldlevel = 99
+opt.foldlevelstart = 99
+opt.foldenable = true
+opt.fillchars = {
+  eob = " ",
+  fold = " ",
+  foldopen = "",
+  foldsep = " ",
+  foldclose = "›",
+}
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0

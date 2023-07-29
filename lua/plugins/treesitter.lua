@@ -20,7 +20,6 @@ return {
       context_commentstring = { enable = true, enable_autocmd = false },
       ensure_installed = {
         "bash",
-        "c",
         "gitcommit",
         "html",
         "css",
@@ -74,7 +73,6 @@ return {
 
       vim.opt.foldmethod = "expr"
       vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-      vim.opt.foldenable = false
     end,
   },
 }

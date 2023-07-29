@@ -5,10 +5,14 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       options = {
-        custom_commentstring = function() return vim.bo.commentstring end,
+        custom_commentstring = function()
+          return vim.bo.commentstring
+        end,
       },
       hooks = {
-        pre = function() require("ts_context_commentstring.internal").update_commentstring({}) end,
+        pre = function()
+          require("ts_context_commentstring.internal").update_commentstring({})
+        end,
       },
     },
   },
@@ -43,8 +47,12 @@ return {
       require("illuminate").configure(opts)
       local map = require("util").map
 
-      map("n", "]r", function() require("illuminate").goto_next_reference(false) end, { desc = "Next Reference" })
-      map("n", "[r", function() require("illuminate").goto_prev_reference(false) end, { desc = "Prev Reference" })
+      map("n", "]r", function()
+        require("illuminate").goto_next_reference(false)
+      end, { desc = "Next Reference" })
+      map("n", "[r", function()
+        require("illuminate").goto_prev_reference(false)
+      end, { desc = "Prev Reference" })
     end,
   },
 }

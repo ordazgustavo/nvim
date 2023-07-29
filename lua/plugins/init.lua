@@ -22,20 +22,26 @@ return {
     keys = {
       {
         "<tab>",
-        function() return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>" end,
+        function()
+          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
+        end,
         expr = true,
         silent = true,
         mode = "i",
       },
       {
         "<tab>",
-        function() require("luasnip").jump(1) end,
+        function()
+          require("luasnip").jump(1)
+        end,
         mode = "s",
       },
 
       {
         "<s-tab>",
-        function() require("luasnip").jump(-1) end,
+        function()
+          require("luasnip").jump(-1)
+        end,
         mode = { "i", "s" },
       },
     },
@@ -57,7 +63,9 @@ return {
         local gs = package.loaded.gitsigns
         local m = require("util").map
 
-        local function map(mode, l, r, desc) m(mode, l, r, { buffer = buffer, desc = desc }) end
+        local function map(mode, l, r, desc)
+          m(mode, l, r, { buffer = buffer, desc = desc })
+        end
 
         map("n", "]g", gs.next_hunk, "Next Hunk")
         map("n", "[g", gs.prev_hunk, "Previous Hunk")
@@ -67,9 +75,13 @@ return {
         map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
         map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
         map("n", "<leader>ghp", gs.preview_hunk, "Preview Hunk")
-        map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
+        map("n", "<leader>ghb", function()
+          gs.blame_line({ full = true })
+        end, "Blame Line")
         map("n", "<leader>ghd", gs.diffthis, "Diff This")
-        map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
+        map("n", "<leader>ghD", function()
+          gs.diffthis("~")
+        end, "Diff This ~")
       end,
     },
   },
@@ -77,12 +89,14 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
-    version = false, -- telescope did only one release, so use HEAD for now
+    version = false,
     dependencies = {
       {
         "nvim-telescope/telescope-fzf-native.nvim",
         build = "make",
-        cond = function() return vim.fn.executable("make") == 1 end,
+        cond = function()
+          return vim.fn.executable("make") == 1
+        end,
       },
       "nvim-telescope/telescope-file-browser.nvim",
     },
@@ -90,29 +104,11 @@ return {
       defaults = {
         path_display = { "truncate" },
         sorting_strategy = "ascending",
-        layout_config = {
-          horizontal = {
-            prompt_position = "top",
-            preview_width = 0.55,
-            results_width = 0.8,
-          },
-          vertical = {
-            mirror = false,
-          },
-          width = 0.87,
-          height = 0.80,
-          preview_cutoff = 120,
-        },
         mappings = {
           i = {
             ["<C-u>"] = false,
             ["<C-d>"] = false,
           },
-        },
-      },
-      pickers = {
-        find_files = {
-          theme = "ivy",
         },
       },
       extensions = {
@@ -125,10 +121,15 @@ return {
       },
     },
     config = function(_, opts)
-      require("telescope").setup(opts)
+      local telescope = require("telescope")
+      local ivy = require("telescope.themes").get_ivy
+      telescope.setup({
+        defaults = vim.tbl_extend("force", ivy(opts), opts),
+        extensions = opts.extensions,
+      })
 
-      require("telescope").load_extension("fzf")
-      require("telescope").load_extension("file_browser")
+      telescope.load_extension("fzf")
+      telescope.load_extension("file_browser")
     end,
     keys = {
       -- explore
@@ -154,6 +155,7 @@ return {
 
   {
     "folke/which-key.nvim",
+    event = "VeryLazy",
     opts = {
       plugins = { spelling = true },
     },
@@ -178,7 +180,7 @@ return {
 
   {
     "shortcuts/no-neck-pain.nvim",
-    lazy = true,
+    cmd = "NoNeckPain",
     version = "*",
     opts = {
       width = 120,
