@@ -216,37 +216,6 @@ return {
         },
         lualine_x = {
           { "searchcount" },
-          -- {
-          --   "lsp",
-          --   fmt = function()
-          --     local label = ""
-          --     for k, lsp in pairs(servers) do
-          --       print(vim.inspect(lsp))
-          --       table.concat({
-          --         label,
-          --         lsp.title or "",
-          --         lsp.message or "",
-          --         lsp.percentage and "(" .. lsp.percentage .. "%)" or "",
-          --       }, " ")
-          --       servers[k] = nil
-          --     end
-          --     return label
-          --     -- if not servers.registered then
-          --     --   return ""
-          --     -- end
-          --     --
-          --     -- local label = "Lsp: "
-          --     --
-          --     -- for server, finished in pairs(servers.status) do
-          --     --   if server ~= "registered" then
-          --     --     local icon = finished and "◉ " or "◌ "
-          --     --     label = label .. icon .. server .. " "
-          --     --   end
-          --     -- end
-          --     --
-          --     -- return label
-          --   end,
-          -- },
           {
             "diagnostics",
             symbols = {
@@ -255,6 +224,11 @@ return {
               info = icons.diagnostics.Info,
               hint = icons.diagnostics.Hint,
             },
+          },
+          {
+            function()
+              return os.date("%H:%M", os.time())
+            end,
           },
         },
         lualine_y = {
@@ -274,63 +248,6 @@ return {
     config = function(_, opts)
       local lualine = require("lualine")
       lualine.setup(opts)
-
-      --- Trigger an AstroNvim user event
-      -- @param event string The event name to be appended to Astro
-      -- local function evt(event)
-      --   vim.schedule(function()
-      --     vim.api.nvim_exec_autocmds("User", { pattern = "CustomEvent" .. event, modeline = false })
-      --   end)
-      -- end
-      -- local function extend_tbl(default, o)
-      --   o = o or {}
-      --   return default and vim.tbl_deep_extend("force", default, o) or o
-      -- end
-      --
-      -- local orig_handler = vim.lsp.handlers["$/progress"]
-      -- vim.lsp.handlers["$/progress"] = function(_, msg, info)
-      --   local progress, id = servers, ("%s.%s"):format(info.client_id, msg.token)
-      --   progress[id] = progress[id] and extend_tbl(progress[id], msg.value) or msg.value
-      --   lualine.refresh({
-      --     scope = "lsp",
-      --     place = { "statusline" },
-      --   })
-      --   -- print(vim.inspect(progress))
-      --   -- if progress[id].kind == "end" then
-      --   --   vim.defer_fn(function()
-      --   --     progress[id] = nil
-      --   --     evt "LspProgress"
-      --   --   end, 100)
-      --   -- end
-      --   -- evt "LspProgress"
-      --   orig_handler(_, msg, info)
-      -- end
-
-      -- local function handle_progress(_, msg, ctx)
-      --   if msg.value.kind == "begin" or msg.value.kind == "end" then
-      --     local client = vim.lsp.get_client_by_id(ctx.client_id)
-      --     if client ~= nil then
-      --       servers.registered = true
-      --       servers.status[client.name] = msg.value.kind == "end"
-      --
-      --       lualine.refresh({
-      --         scope = "lsp",
-      --         place = { "statusline" },
-      --       })
-      --     end
-      --   end
-      -- end
-      --
-      -- if vim.lsp.handlers["$/progress"] then
-      --   local old_handler = vim.lsp.handlers["$/progress"]
-      --   ---@diagnostic disable-next-line: duplicate-set-field
-      --   vim.lsp.handlers["$/progress"] = function(...)
-      --     old_handler(...)
-      --     handle_progress(...)
-      --   end
-      -- else
-      --   vim.lsp.handlers["$/progress"] = handle_progress
-      -- end
     end,
   },
 }
