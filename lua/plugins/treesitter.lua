@@ -70,9 +70,6 @@ return {
       require("nvim-treesitter.configs").setup(opts)
 
       require("nvim-treesitter.install").update({ with_sync = true })
-
-      vim.opt.foldmethod = "expr"
-      vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
     end,
   },
 }

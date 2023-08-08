@@ -32,7 +32,7 @@ opt.shiftround = true -- Round indent
 opt.shiftwidth = 2 -- Size of an indent
 opt.shortmess:append({ W = true, I = true, c = true, C = true })
 opt.sidescrolloff = 8 -- Columns of context
-opt.signcolumn = "yes" -- Always show the signcolumn, otherwise it would shift the text each time
+opt.signcolumn = "yes:1" -- Always show the signcolumn, otherwise it would shift the text each time
 opt.smartcase = true -- Don't ignore case with capitals
 opt.smartindent = true -- Insert indents automatically
 opt.spelllang = { "en" }
@@ -49,10 +49,10 @@ opt.wildmode = "longest:full,full" -- Command-line completion mode
 opt.winminwidth = 5 -- Minimum window width
 opt.wrap = true -- Disable line wrap
 
-opt.foldcolumn = "1"
-opt.foldlevel = 99
-opt.foldlevelstart = 99
-opt.foldenable = true
+-- opt.foldcolumn = "auto:3"
+-- opt.foldlevel = 99
+-- opt.foldlevelstart = 99
+-- opt.foldenable = true
 opt.fillchars = {
   eob = " ",
   fold = " ",
