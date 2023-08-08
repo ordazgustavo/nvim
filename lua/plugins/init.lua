@@ -8,6 +8,7 @@ return {
     lazy = false,
     config = function()
       vim.g.everforest_background = "hard"
+      vim.g.everforest_disable_italic_comment = 1
       vim.cmd.colorscheme("everforest")
     end,
   },
@@ -59,6 +60,7 @@ return {
         changedelete = { text = "▎" },
         untracked = { text = "▎" },
       },
+      signcolumn = true,
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns
         local m = require("util").map
