@@ -1,15 +1,15 @@
-local group = vim.api.nvim_create_augroup("lsp_document_codelens", {})
+-- local group = vim.api.nvim_create_augroup("lsp_document_codelens", {})
 
----@param bufnr number
-local function buf_autocmd_codelens(bufnr)
-  vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "BufWritePost", "CursorHold" }, {
-    buffer = bufnr,
-    group = group,
-    callback = function()
-      vim.lsp.codelens.refresh()
-    end,
-  })
-end
+-- -@param bufnr number
+-- local function buf_autocmd_codelens(bufnr)
+--   vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "BufWritePost", "CursorHold" }, {
+--     buffer = bufnr,
+--     group = group,
+--     callback = function()
+--       vim.lsp.codelens.refresh()
+--     end,
+--   })
+-- end
 
 local function lsp_format(bufnr, has_nls)
   vim.lsp.buf.format({
@@ -51,10 +51,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     local client = vim.lsp.get_client_by_id(args.data.client_id)
 
-    if client.supports_method("textDocument/codeLens") then
-      buf_autocmd_codelens(buffer)
-      vim.schedule(vim.lsp.codelens.refresh)
-    end
+    -- if client.supports_method("textDocument/codeLens") then
+    --   buf_autocmd_codelens(buffer)
+    --   vim.schedule(vim.lsp.codelens.refresh)
+    -- end
 
     if client.supports_method("textDocument/formatting") then
       local ft = vim.bo[buffer].filetype
