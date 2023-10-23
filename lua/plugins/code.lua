@@ -11,16 +11,10 @@ return {
       },
       hooks = {
         pre = function()
-          require("ts_context_commentstring.internal").update_commentstring({})
+          require("ts_context_commentstring.internal").update_commentstring()
         end,
       },
     },
-  },
-  {
-    "echasnovski/mini.pairs",
-    version = false,
-    event = { "BufReadPost", "BufNewFile" },
-    opts = {},
   },
   {
     "echasnovski/mini.surround",

@@ -44,11 +44,29 @@ return {
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
       local flags = { debounce_text_changes = 500 }
 
+      lspconfig.sourcekit.setup({
+        capabilities = capabilities,
+        flags = flags,
+      })
+
       require("mason-lspconfig").setup_handlers({
         function(server_name)
           lspconfig[server_name].setup({
             capabilities = capabilities,
             flags = flags,
+          })
+        end,
+        rust_analyzer = function()
+          lspconfig.rust_analyzer.setup({
+            capabilities = capabilities,
+            flags = flags,
+            settings = {
+              ["rust-analyzer"] = {
+                diagnostics = {
+                  disabled = { "inactive-code" },
+                },
+              },
+            },
           })
         end,
         lua_ls = function()
@@ -97,6 +115,11 @@ return {
           lspconfig.tsserver.setup({
             capabilities = capabilities,
             flags = flags,
+            init_options = {
+              preferences = {
+                disableSuggestions = true,
+              },
+            },
             settings = {
               completions = {
                 completeFunctionCalls = true,

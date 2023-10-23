@@ -15,7 +15,10 @@ return {
     },
     opts = {
       autotag = { enable = true },
-      highlight = { enable = true },
+      highlight = {
+        enable = true,
+        use_language_tree = true,
+      },
       indent = { enable = true },
       context_commentstring = { enable = true, enable_autocmd = false },
       ensure_installed = {
@@ -63,6 +66,27 @@ return {
             ["ic"] = "@class.inner",
           },
         },
+      },
+    },
+    move = {
+      enable = true,
+      set_jumps = true,
+      goto_next_start = {
+        ["]m"] = { query = "@function.outer", desc = "Next function start" },
+        ["]c"] = { query = "@class.outer", desc = "Next class start" },
+      },
+      goto_previous_start = {
+        ["[m"] = { query = "@function.outer", desc = "Prev function start" },
+        ["[c"] = { query = "@class.outer", desc = "Prev class start" },
+      },
+    },
+    lsp_interop = {
+      enable = true,
+      border = "none",
+      floating_preview_opts = {},
+      peek_definition_code = {
+        ["<leader>df"] = "@function.outer",
+        ["<leader>dF"] = "@class.outer",
       },
     },
     ---@param opts TSConfig

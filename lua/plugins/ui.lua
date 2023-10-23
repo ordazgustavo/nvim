@@ -2,12 +2,10 @@ local util = require("util")
 
 local icons = util.icons
 
--- local servers = {}
-
 return {
   {
     "stevearc/dressing.nvim",
-    lazy = true,
+    event = "VeryLazy",
     init = function()
       ---@diagnostic disable-next-line: duplicate-set-field
       vim.ui.select = function(...)
@@ -86,16 +84,13 @@ return {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
+      "LuaSnip",
       "saadparwaiz1/cmp_luasnip",
+      "rafamadriz/friendly-snippets",
     },
     opts = function()
       local cmp = require("cmp")
       local luasnip = require("luasnip")
-
-      local has_words_before = function()
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-      end
 
       ---@diagnostic disable-next-line: missing-fields
       cmp.setup.cmdline({ "/", "?" }, {
@@ -105,9 +100,11 @@ return {
         },
       })
 
+      require("luasnip.loaders.from_vscode").lazy_load()
+
       return {
         completion = {
-          completeopt = "menu,menuone,noinsert",
+          completeopt = "menuone,noselect",
         },
         snippet = {
           expand = function(args)
@@ -115,52 +112,49 @@ return {
           end,
         },
         window = {
-          completion = cmp.config.window.bordered(),
-          documentation = cmp.config.window.bordered(),
+          completion = {
+            side_padding = 0,
+            col_offset = -3,
+          },
+        },
+        view = {
+          docs = {
+            auto_open = false,
+          },
         },
         mapping = cmp.mapping.preset.insert({
-          ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+          ["<C-n>"] = cmp.mapping.select_next_item(),
+          ["<C-p>"] = cmp.mapping.select_prev_item(),
           ["<C-u>"] = cmp.mapping.scroll_docs(-4),
           ["<C-d>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
           ["<CR>"] = cmp.mapping.confirm({ select = true }),
-          ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              -- cmp.select_next_item()
-              cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-            elseif luasnip.expand_or_jumpable() then
-              luasnip.expand_or_jump()
-            elseif has_words_before() then
-              cmp.complete()
+          ["<C-g>"] = function()
+            if cmp.visible_docs() then
+              cmp.close_docs()
             else
-              fallback()
+              cmp.open_docs()
             end
-          end, { "i", "s" }),
-          ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
-            elseif luasnip.jumpable(-1) then
-              luasnip.jump(-1)
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
+          end,
         }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
+        }, {
           { name = "luasnip" },
           { name = "path" },
-        }, {
           { name = "buffer", keyword_length = 3 },
         }),
         formatting = {
+          fields = { "kind", "abbr", "menu" },
           format = function(_, item)
-            local kinds = icons.kinds
-            if kinds[item.kind] then
-              item.kind = kinds[item.kind]
-            end
+            print(vim.inspect(item))
+            local kind = string.format("%s %s", icons.kinds[item.kind], item.kind)
+
+            -- Move the icon to be on the left side
+            local strings = vim.split(kind, "%s", { trimempty = true })
+            item.kind = " " .. strings[1] .. " "
+
             return item
           end,
         },
@@ -171,6 +165,41 @@ return {
         },
       }
     end,
+  },
+
+  {
+    "L3MON4D3/LuaSnip",
+    opts = {
+      history = true,
+      delete_check_events = "TextChanged",
+      region_check_events = "CursorMoved",
+    },
+    keys = {
+      {
+        "<tab>",
+        function()
+          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
+        end,
+        expr = true,
+        silent = true,
+        mode = "i",
+      },
+      {
+        "<tab>",
+        function()
+          require("luasnip").jump(1)
+        end,
+        mode = "s",
+      },
+
+      {
+        "<s-tab>",
+        function()
+          require("luasnip").jump(-1)
+        end,
+        mode = { "i", "s" },
+      },
+    },
   },
 
   {
@@ -245,9 +274,5 @@ return {
         },
       },
     },
-    config = function(_, opts)
-      local lualine = require("lualine")
-      lualine.setup(opts)
-    end,
   },
 }

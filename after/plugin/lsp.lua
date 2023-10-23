@@ -40,7 +40,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     nmap("ge", vim.diagnostic.open_float)
     nmap("gq", vim.diagnostic.setloclist)
 
-    nmap("gd", vim.lsp.buf.definition, "Goto Definition")
+    nmap("gd", "<Cmd>Telescope lsp_definitions<cr>", "Goto Definition")
     nmap("gI", vim.lsp.buf.implementation, "Goto Implementation")
 
     nmap("K", vim.lsp.buf.hover, "Hover Documentation")

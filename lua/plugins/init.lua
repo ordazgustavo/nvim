@@ -4,48 +4,21 @@ return {
   { "nvim-tree/nvim-web-devicons", lazy = true, opts = { color_icons = false } },
   { "tpope/vim-repeat" },
   {
-    "sainnhe/everforest",
+    "neanias/everforest-nvim",
+    version = false,
     lazy = false,
+    priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
-      vim.g.everforest_background = "hard"
-      vim.g.everforest_disable_italic_comment = 1
+      require("everforest").setup({
+        background = "hard",
+        transparent_background_level = 1,
+        diagnostic_virtual_text = "grey",
+        on_highlights = function(hl)
+          hl.Red = { fg = hl.Red.fg, bold = true }
+        end,
+      })
       vim.cmd.colorscheme("everforest")
     end,
-  },
-
-  {
-    "L3MON4D3/LuaSnip",
-    opts = {
-      history = true,
-      delete_check_events = "TextChanged",
-      region_check_events = "CursorMoved",
-    },
-    keys = {
-      {
-        "<tab>",
-        function()
-          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
-        end,
-        expr = true,
-        silent = true,
-        mode = "i",
-      },
-      {
-        "<tab>",
-        function()
-          require("luasnip").jump(1)
-        end,
-        mode = "s",
-      },
-
-      {
-        "<s-tab>",
-        function()
-          require("luasnip").jump(-1)
-        end,
-        mode = { "i", "s" },
-      },
-    },
   },
 
   {
@@ -55,7 +28,7 @@ return {
       signs = {
         add = { text = "▎" },
         change = { text = "▎" },
-        delete = { text = "▎" },
+        delete = { text = "►" },
         topdelete = { text = "▎" },
         changedelete = { text = "▎" },
         untracked = { text = "▎" },
