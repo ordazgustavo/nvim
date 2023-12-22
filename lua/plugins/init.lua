@@ -11,7 +11,6 @@ return {
     config = function()
       require("everforest").setup({
         background = "hard",
-        transparent_background_level = 1,
         diagnostic_virtual_text = "grey",
         on_highlights = function(hl)
           hl.Red = { fg = hl.Red.fg, bold = true }
